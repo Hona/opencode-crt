@@ -35,4 +35,6 @@ bun run dev
 
 `bun run dev` rebuilds `dist/gui-experimental.cjs` on every change. Point your config at the folder (`"plugins": ["/path/to/opencode-crt"]`) and OpenCode Desktop reloads the plugin on each rebuild.
 
-`dist/` is committed so that GitHub installs, which do not run build scripts, get the bundle.
+`bun run bundle` builds once. `dist/` is committed, so a GitHub install needs no build step. The script is not named
+`build` on purpose: npm runs `npm install` with devDependencies in a git dependency that has a `build`, `prepare`,
+`prepack` or install script, which would download Electron just to install this plugin.
