@@ -1,0 +1,63 @@
+.opencode-crt-settings {
+  display: flex;
+  flex-direction: column;
+}
+
+.opencode-crt-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 12px 0;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.opencode-crt-row > :only-child {
+  flex: 1;
+}
+
+.opencode-crt-row[data-disabled] {
+  opacity: 0.5;
+}
+
+.opencode-crt-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.opencode-crt-muted {
+  opacity: 0.6;
+}
+
+.opencode-crt-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.opencode-crt-range input {
+  width: 160px;
+  accent-color: currentColor;
+}
+
+.opencode-crt-value {
+  width: 3ch;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.6;
+}
+
+.opencode-crt-choices {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.opencode-crt-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 12px;
+}

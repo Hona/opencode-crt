@@ -1,0 +1,36 @@
+{
+  "name": "@hona/opencode-crt",
+  "version": "0.1.0",
+  "description": "OpenCode Desktop: a CRT monitor filter with barrel distortion, scanlines, shadow mask, convergence error, bloom and flicker.",
+  "license": "MIT",
+  "author": "Luke Parker",
+  "type": "module",
+  "keywords": ["opencode", "opencode-plugin"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hona/opencode-crt.git"
+  },
+  "homepage": "https://github.com/Hona/opencode-crt#readme",
+  "bugs": "https://github.com/Hona/opencode-crt/issues",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./gui-experimental": "./dist/gui-experimental.cjs"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "prepublishOnly": "vite build"
+  },
+  "devDependencies": {
+    "@opencode/plugin": "^0.0.0-dev-64",
+    "@types/node": "^26.6.5",
+    "effect": "4.0.1",
+    "electron": "44.9.1",
+    "solid-js": "^1.9.17",
+    "vite": "^8.3.5",
+    "vite-plugin-solid": "^2.11.14"
+  }
+}

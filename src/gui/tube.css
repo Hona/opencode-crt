@@ -1,0 +1,403 @@
+/* The tube: the page, inset into the monitor case and bent by the filter. Fixed descendants such as dialogs and
+   toasts stay inside it, because a filtered element contains them. */
+html {
+  background: #000 !important;
+}
+
+body {
+  position: fixed !important;
+  top: var(--crt-top) !important;
+  left: var(--crt-side) !important;
+  right: var(--crt-side) !important;
+  bottom: var(--crt-bottom) !important;
+  z-index: 1;
+  margin: 0 !important;
+  background: #000;
+  filter: url(#opencode-crt-tube) brightness(1.12) contrast(1.06) saturate(1.08);
+}
+
+body > #root {
+  height: 100% !important;
+}
+
+/* The case draws the window buttons above the tube, so the app's titlebar need not leave room for them. */
+body [data-slot="titlebar-v2"] {
+  width: auto !important;
+  max-width: none !important;
+}
+
+.opencode-crt-glass {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  pointer-events: none;
+}
+
+.opencode-crt-glass > div,
+.opencode-crt-beam > div {
+  position: absolute;
+  inset: 0;
+}
+
+/* One dark gap per three CSS pixels: the space between beam lines. */
+.opencode-crt-scanlines {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(0 0 0 / var(--crt-scan)) 0,
+    rgb(0 0 0 / var(--crt-scan)) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* Aperture grille: vertical red, green and blue phosphor stripes. Multiply removes the other two primaries. */
+.opencode-crt-mask {
+  mix-blend-mode: multiply;
+  opacity: var(--crt-mask);
+  background: repeating-linear-gradient(
+    to right,
+    #ff2020 0,
+    #ff2020 1px,
+    #20ff20 1px,
+    #20ff20 2px,
+    #2020ff 2px,
+    #2020ff 3px
+  );
+}
+
+/* The beam is weaker at the edges of the tube, and the glass catches the room's light at the top left. */
+.opencode-crt-vignette {
+  background:
+    radial-gradient(ellipse 60% 45% at 28% 18%, rgb(255 255 255 / 0.05), transparent 70%),
+    radial-gradient(ellipse 75% 75% at 50% 50%, transparent 55%, rgb(0 0 0 / 0.55) 100%);
+}
+
+/* Rounded corners of the tube's face. The spread fills the corners outside the radius. */
+.opencode-crt-bezel {
+  border-radius: 28px / 34px;
+  box-shadow:
+    0 0 0 64px #000,
+    inset 0 0 24px 6px rgb(0 0 0 / 0.75);
+}
+
+/* The case: flat moulded plastic, outside the tube and outside the filter. */
+.opencode-crt-case {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgb(255 255 255 / 0.06), transparent 30%, transparent 75%, rgb(0 0 0 / 0.35)),
+    repeating-radial-gradient(circle at 30% 40%, rgb(255 255 255 / 0.012) 0 1px, transparent 1px 3px),
+    #26262a;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.1), inset 0 -1px 0 rgb(0 0 0 / 0.6);
+  font-family: var(--font-family-sans);
+}
+
+/* The top of the case moves the window, as the titlebar did. */
+.opencode-crt-case-top {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: var(--crt-top);
+  pointer-events: auto;
+  app-region: drag;
+}
+
+.opencode-crt-recess {
+  position: absolute;
+  border-radius: 22px / 26px;
+  background: #050505;
+  box-shadow:
+    inset 0 2px 6px rgb(0 0 0 / 0.9),
+    0 1px 0 rgb(255 255 255 / 0.08),
+    0 -1px 0 rgb(0 0 0 / 0.5);
+}
+
+.opencode-crt-badge {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--crt-bottom) / 2);
+  transform: translate(-50%, 50%);
+  font-size: 10px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  color: rgb(255 255 255 / 0.28);
+  text-shadow: 0 -1px 0 rgb(0 0 0 / 0.6);
+}
+
+.opencode-crt-controls {
+  position: absolute;
+  right: calc(var(--crt-side) + 12px);
+  bottom: calc(var(--crt-bottom) / 2);
+  transform: translateY(50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.opencode-crt-knob {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #4a4a50, #18181b 70%);
+  box-shadow: 0 1px 1px rgb(0 0 0 / 0.7), inset 0 1px 0 rgb(255 255 255 / 0.12);
+}
+
+.opencode-crt-led {
+  width: 6px;
+  height: 6px;
+  margin-left: 4px;
+  border-radius: 50%;
+  background: #4dff7a;
+  box-shadow: 0 0 6px 1px rgb(77 255 122 / 0.6);
+}
+
+/* Moulded buttons over the native caption buttons, which draw no glyphs while the case shows. */
+.opencode-crt-caption {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.opencode-crt-caption > span {
+  position: relative;
+  width: 30px;
+  height: 18px;
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #35353a, #1e1e22);
+  box-shadow: 0 1px 1px rgb(0 0 0 / 0.7), inset 0 1px 0 rgb(255 255 255 / 0.1);
+}
+
+.opencode-crt-caption > span::before,
+.opencode-crt-caption > span::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: rgb(255 255 255 / 0.55);
+}
+
+.opencode-crt-caption > [data-glyph="minimize"]::before {
+  width: 10px;
+  height: 1px;
+  transform: translate(-50%, -50%);
+}
+
+.opencode-crt-caption > [data-glyph="maximize"]::before {
+  width: 9px;
+  height: 7px;
+  background: transparent;
+  border: 1px solid rgb(255 255 255 / 0.55);
+  transform: translate(-50%, -50%);
+}
+
+.opencode-crt-caption > [data-glyph="close"]::before,
+.opencode-crt-caption > [data-glyph="close"]::after {
+  width: 11px;
+  height: 1px;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.opencode-crt-caption > [data-glyph="close"]::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.opencode-crt-beam {
+  position: fixed;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 22px / 26px;
+}
+
+.opencode-crt-flicker {
+  background: #000;
+  opacity: 0;
+  animation: opencode-crt-flicker 0.12s steps(1) infinite;
+}
+
+.opencode-crt-roll {
+  inset: 0 0 auto 0 !important;
+  height: 18%;
+  mix-blend-mode: screen;
+  background: linear-gradient(to bottom, transparent, rgb(255 255 255 / 0.035) 50%, transparent);
+  animation: opencode-crt-roll 9s linear infinite;
+  will-change: transform;
+}
+
+@keyframes opencode-crt-flicker {
+  0% {
+    opacity: 0.025;
+  }
+  25% {
+    opacity: 0.05;
+  }
+  50% {
+    opacity: 0.015;
+  }
+  75% {
+    opacity: 0.04;
+  }
+}
+
+@keyframes opencode-crt-roll {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(600%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opencode-crt-beam {
+    display: none;
+  }
+}
+
+/* The entity. While it is in the picture, the colour drains out of the tube. */
+html:has(.opencode-crt-entity[data-presence]) body {
+  filter: url(#opencode-crt-tube) brightness(1.02) contrast(1.18) saturate(0.4);
+}
+
+/* Losing sync when it comes or goes: the picture jumps sideways for a moment. */
+html:has(.opencode-crt-entity[data-tear]) body {
+  animation: opencode-crt-tear 0.15s steps(3) 1;
+}
+
+.opencode-crt-tear {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 7%;
+  mix-blend-mode: screen;
+  transform: translateX(-3%);
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 0.2) 0,
+    rgb(255 255 255 / 0.2) 1px,
+    transparent 1px,
+    transparent 2px,
+    rgb(255 255 255 / 0.07) 2px,
+    rgb(255 255 255 / 0.07) 3px
+  );
+}
+
+.opencode-crt-figure {
+  position: absolute;
+  left: var(--x);
+  bottom: var(--floor);
+  height: var(--height);
+  aspect-ratio: 1 / 3;
+  opacity: var(--opacity);
+  transform: translateX(-50%);
+  /* It never quite holds still. */
+  animation: opencode-crt-stutter 1.3s steps(1) infinite;
+}
+
+.opencode-crt-figure svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.opencode-crt-head {
+  transform-box: view-box;
+  transform-origin: 61px 82px;
+  transition: transform var(--duration) cubic-bezier(0.6, 0, 0.4, 1);
+}
+
+.opencode-crt-figure[data-entered] .opencode-crt-head {
+  transform: rotate(var(--tilt));
+}
+
+/* A peek leans in from the edge of the tube, slowly, and only then turns its head. */
+.opencode-crt-figure[data-kind="peek"] {
+  animation: none;
+  transition: transform 4.2s cubic-bezier(0.2, 0, 0.1, 1);
+}
+
+.opencode-crt-figure[data-kind="peek"][data-side="left"] {
+  left: 0;
+  transform-origin: bottom right;
+  transform: translateX(-100%) rotate(14deg);
+}
+
+.opencode-crt-figure[data-kind="peek"][data-side="left"][data-entered] {
+  transform: translateX(-60%) rotate(14deg);
+}
+
+.opencode-crt-figure[data-kind="peek"][data-side="right"] {
+  left: 100%;
+  transform-origin: bottom left;
+  transform: translateX(0) rotate(-14deg);
+}
+
+.opencode-crt-figure[data-kind="peek"][data-side="right"][data-entered] {
+  transform: translateX(-40%) rotate(-14deg);
+}
+
+.opencode-crt-figure[data-kind="peek"] .opencode-crt-head {
+  transition: transform 1.6s cubic-bezier(0.7, 0, 0.3, 1) 3.2s;
+}
+
+/* Rarely, its face fills the tube. */
+.opencode-crt-figure[data-kind="close"] {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  transform: none;
+  animation: opencode-crt-lunge 0.18s steps(3) 1;
+}
+
+.opencode-crt-figure[data-kind="close"] .opencode-crt-head {
+  transition: none;
+}
+
+@keyframes opencode-crt-stutter {
+  0% {
+    transform: translateX(-50%);
+  }
+  31% {
+    transform: translateX(calc(-50% + 1px));
+  }
+  47% {
+    transform: translate(calc(-50% - 1px), 1px);
+  }
+  52% {
+    transform: translateX(-50%);
+  }
+  88% {
+    transform: translate(calc(-50% + 2px), 0);
+  }
+}
+
+@keyframes opencode-crt-lunge {
+  0% {
+    transform: scale(0.82);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes opencode-crt-tear {
+  0% {
+    transform: translate(-8px, 0) skewX(1.5deg);
+  }
+  50% {
+    transform: translate(6px, -2px) skewX(-1deg);
+  }
+  100% {
+    transform: none;
+  }
+}
